@@ -1,0 +1,38 @@
+{
+    "name": "laradic/debug",
+    "description": "Laravel 5 debug package",
+    "homepage": "https://github.com/laradic/debug",
+    "keywords": [
+        "bench",
+        "debug",
+        "benchmark",
+        "generator",
+        "test",
+        "testing",
+        "laravel"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robin Radic",
+            "email": "robin@radic.nl",
+            "role": "Package Author/Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4.0",
+        "laradic/support": "*",
+        "ccampbell/chromephp": "~4.1",
+        "firephp/firephp-core": "0.4.*",
+        "tracy/tracy": "2.3.*"
+    },
+    "scripts": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Laradic\\Debug\\": ""
+        }
+    }
+}
