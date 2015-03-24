@@ -5,7 +5,7 @@
 namespace Laradic\Debug\Providers;
 
 use Event;
-use Illuminate\Support\ServiceProvider;
+use Laradic\Support\ServiceProvider;
 
 
 class DebugbarServiceProvider extends ServiceProvider
@@ -15,14 +15,16 @@ class DebugbarServiceProvider extends ServiceProvider
     /** @inheritdoc */
     public function boot()
     {
-        if ( $this->app->runningInConsole() )
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = parent::boot();
+        if ( $app->runningInConsole() )
         {
             return;
         }
-        $app = $this->app;
+
 
         #Debugger::log('sdf');
-        Event::listen('bootstrapping', function () use ($app)
+        $app->make('events')->listen('bootstrapping', function () use ($app)
         {
             # echo '<br><br><br><br><br>';
 
@@ -36,13 +38,13 @@ class DebugbarServiceProvider extends ServiceProvider
             /** @var \Assetic\Asset\AssetCollection $css */
             $css = $col[0];
 
-
-            \View::share('debugbar_css', $css->dump());
+            $view = $app->make('view');
+            $view->share('debugbar_css', $css->dump());
             /** @var \Assetic\Asset\AssetCollection $js */
             $js     = $col[1];
             $render = str_replace('<script type="text/javascript">', '', $jsr->render());
             $render = str_replace('</script>', '', $render);
-            \View::share('debugbar_js', $js->dump() . "\n;\n" . $render);
+            $view->share('debugbar_js', $js->dump() . "\n;\n" . $render);
             #$response['debugbar_css'] = '';
         });
     }
@@ -58,7 +60,7 @@ class DebugbarServiceProvider extends ServiceProvider
         $debugbar = $this->app->make('debugbar');
         $debugbar->disable();
 
-        if ( $this->app->config->get('debug.debugbar') and ! $this->app->runningInConsole() )
+        if ( $this->app->config->get('laradic/debug::debugbar') and ! $this->app->runningInConsole() )
         {
 
             $debugbar->enable();

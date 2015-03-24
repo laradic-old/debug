@@ -14,6 +14,7 @@ class DebugBarAssetController extends AssetController
     {
         $renderer = $this->debugbar->getJavascriptRenderer();
 
+
         $content = <<<'EOT'
 define(['jquery'], function($){
     if(typeof(jQuery) === 'undefined') {
@@ -22,7 +23,7 @@ define(['jquery'], function($){
 
 EOT;
 
-        $content .= $renderer->dumpAssetsToString('js');
+        $content .= $renderer->setIncludeVendors(false)->dumpAssetsToString('js');
 
         $content .= <<<'EOT'
 
