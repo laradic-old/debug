@@ -21,7 +21,7 @@ use Laradic\Config\Traits\ConfigProviderTrait;
 class DebugServiceProvider extends ServiceProvider
 {
     use ConfigProviderTrait;
-    protected $configFiles = ['debug'];
+    #protected $configFiles = ['debug'];
     protected $dir = __DIR__;
 
     /** @inheritdoc */
@@ -59,9 +59,8 @@ class DebugServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $path = realpath(__DIR__ . '/../');
-        $this->addConfigComponent('laradic/debug', 'laradic/debug', $path . '/config');
-
+        $path = realpath(__DIR__ . '/resources/config');
+        $this->addConfigComponent('laradic/debug', 'laradic/debug', $path);
 
         $this->app->register('Laradic\Debug\Providers\RouteServiceProvider');
         $this->app->register('Laradic\Debug\Providers\DebugbarServiceProvider');
@@ -75,7 +74,7 @@ class DebugServiceProvider extends ServiceProvider
             $logger = $app->make('laradic.logger');
             $config = $app['config'];
 
-            $logger->setDefaultLoggers($app['config']->get('debug.loggers'));
+            $logger->setDefaultLoggers($app['config']->get('laradic/debug::loggers'));
             return new Debugger($app, $logger);
         });
         AliasLoader::getInstance()->alias('Debugger', 'Laradic\Debug\Facades\Debugger');
