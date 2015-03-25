@@ -21,9 +21,14 @@ use Laradic\Config\Traits\ConfigProviderTrait;
 class DebugServiceProvider extends ServiceProvider
 {
     use ConfigProviderTrait;
-    #protected $configFiles = ['debug'];
-    protected $dir = __DIR__;
 
+    public function boot()
+    {
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = parent::boot();
+        $app->make('laradic.debugger')->log('debug:app:getBindings', $app->getBindings());
+        $app->make('laradic.debugger')->log('debug:app:getLoadedProviders', $app->getLoadedProviders());
+    }
     /**
      * Register the service provider.
      *
@@ -31,26 +36,29 @@ class DebugServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = parent::register();
 
-        parent::register();
-        $path = realpath(__DIR__ . '/resources/config');
-        $this->addConfigComponent('laradic/debug', 'laradic/debug', $path);
+        $this->addConfigComponent('laradic/debug', 'laradic/debug', realpath(__DIR__ . '/resources/config'));
 
-        $this->app->register('Laradic\Debug\Providers\RouteServiceProvider');
-        $this->app->register('Laradic\Debug\Providers\DebugbarServiceProvider');
-        $this->app->register('Laradic\Debug\Providers\TracyServiceProvider');
-        $this->app->register('Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
+        $app->register('Laradic\Debug\Providers\DebugbarServiceProvider');
+        $app->register('Laradic\Debug\Providers\RouteServiceProvider');
+        $app->register('Laradic\Debug\Providers\TracyServiceProvider');
+        $app->register('Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
 
-        $this->app->singleton('laradic.logger', 'Laradic\Debug\LoggerFactory');
-        #AliasLoader::getInstance()->alias('Logger', 'Laradic\Debug\Facades\Logger');
-        $this->app->singleton('laradic.debugger', function (Application $app)
+        $app->singleton('laradic.logger', 'Laradic\Debug\LoggerFactory');
+        $app->singleton('laradic.debugger', function (Application $app)
         {
             $logger = $app->make('laradic.logger');
-            $config = $app['config'];
-
-            $logger->setDefaultLoggers($config->get('laradic/debug::loggers'));
+            $logger->setDefaultLoggers($app->make('config')->get('laradic/debug::loggers'));
             return new Debugger($app, $logger);
         });
-        AliasLoader::getInstance()->alias('Debugger', 'Laradic\Debug\Facades\Debugger');
+        $this->alias('Debugger', 'Laradic\Debug\Facades\Debugger');
+
+
+        if($this->app->runningInConsole())
+        {
+            $this->app->register('Laradic\Debug\Providers\ConsoleServiceProvider');
+        }
     }
 }

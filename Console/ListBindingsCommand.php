@@ -1,11 +1,20 @@
-<?php namespace Laradic\Debug\Console;
-
-use Laradic\Docit\DocitServiceProvider;
+<?php
+ /**
+ * Part of the Radic packages.
+ */
+namespace Laradic\Debug\Console;
 use Laradic\Support\AbstractConsoleCommand;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 
-class DevCommand extends AbstractConsoleCommand
+/**
+ * Class ListBindingsCommand
+ *
+ * @package     Laradic\Debug\Console
+ * @author      Robin Radic
+ * @license     MIT
+ * @copyright   2011-2015, Robin Radic
+ * @link        http://radic.mit-license.org
+ */
+class ListBindingsCommand extends AbstractConsoleCommand
 {
 
     /**
@@ -13,7 +22,7 @@ class DevCommand extends AbstractConsoleCommand
      *
      * @var string
      */
-    protected $name = 'debug:dev';
+    protected $name = 'debug:bindings';
 
     /**
      * The console command description.
@@ -23,23 +32,13 @@ class DevCommand extends AbstractConsoleCommand
     protected $description = 'Command description.';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function fire()
     {
-        $this->comment('List = ' . print_r(DocitServiceProvider::compiles(), true));
+        $this->dump(array_keys(app()->getBindings()));
     }
 
     /**
@@ -50,7 +49,7 @@ class DevCommand extends AbstractConsoleCommand
     protected function getArguments()
     {
         return [
-            # ['example', InputArgument::REQUIRED, 'An example argument.'],
+           # ['example', InputArgument::REQUIRED, 'An example argument.'],
         ];
     }
 
@@ -62,7 +61,7 @@ class DevCommand extends AbstractConsoleCommand
     protected function getOptions()
     {
         return [
-            # ['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
+           # ['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
         ];
     }
 }

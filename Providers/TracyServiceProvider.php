@@ -5,11 +5,22 @@
 namespace Laradic\Debug\Providers;
 
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Support\ServiceProvider;
+use Laradic\Support\ServiceProvider;
+use Laradic\Debug\Tracy\BarPanel;
 use \Tracy\Debugger as Dbg;
 
 class TracyServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = parent::boot();
+
+        if ( $this->app['config']->get('laradic/debug::tracy') and class_exists('\Tracy\Debugger') )
+        {
+            $app->make('laradic.debugger')->log('tracy');
+        }
+    }
 
     /**
      * Register the service provider.
@@ -18,10 +29,15 @@ class TracyServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = parent::register();
+
         if ( $this->app['config']->get('laradic/debug::tracy') and class_exists('\Tracy\Debugger') )
         {
-            \Tracy\Debugger::enable();
-            \Tracy\Debugger::$logDirectory = storage_path('tracy');
+            Dbg::enable();
+            Dbg::getBar()->addPanel(new BarPanel('dumps'), 'Tracy:dumps');
+
+            Dbg::$logDirectory = storage_path('tracy');
             if ( ! $this->app['files']->isDirectory(storage_path('tracy')) )
             {
                 $this->app['files']->makeDirectory(storage_path('tracy'), 0777, true);
