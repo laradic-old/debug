@@ -28,29 +28,60 @@ class Debugger
      */
     protected $app;
 
+    protected $consoleLogDump = false;
+
+    protected $enabled = false;
+
     public function __construct(Application $application, LoggerFactory $logger)
     {
         $this->app    = $application;
         $this->logger = $logger;
     }
 
+    public function enable()
+    {
+        $this->enabled = true;
+        return $this;
+    }
+
+    public function disable()
+    {
+        $this->enabled = false;
+        return $this;
+    }
+
+    public function isEnabled()
+    {
+        return $this->enabled === true ? true : false;
+    }
+
     public function dump()
     {
-        return forward_static_call_array(['Symfony\Component\VarDumper\VarDumper', 'dump'], func_get_args());
+        if($this->enabled)
+        {
+            return forward_static_call_array(['Symfony\Component\VarDumper\VarDumper', 'dump'], func_get_args());
+        }
     }
 
     public function kint($var)
     {
-        return \Kint::dump($var);
+        if($this->enabled)
+        {
+            return \Kint::dump($var);
+        }
     }
 
     public function log()
     {
-        if ( $this->app->runningInConsole() )
+        if($this->enabled)
         {
-            call_user_func_array([$this, 'dump'], func_get_args());
+            if ( $this->app->runningInConsole() and $this->consoleLogDump )
+            {
+                call_user_func_array([$this, 'dump'], func_get_args());
+            }
+            call_user_func_array([$this->logger, 'info'], func_get_args());
         }
-        call_user_func_array([$this->logger, 'info'], func_get_args());
+        return $this;
     }
 
     public function tracy($title, $var, $options = [])
@@ -64,4 +95,29 @@ class Debugger
                 \Tracy\Dumper::LOCATION => \Tracy\Debugger::$showLocation,
             )));
     }
+
+    /**
+     * Get the value of consoleLogDump
+     *
+     * @return boolean
+     */
+    public function getConsoleLogDump()
+    {
+        return $this->consoleLogDump;
+    }
+
+    /**
+     * Sets the value of consoleLogDump
+     *
+     * @param boolean $consoleLogDump
+     */
+    public function setConsoleLogDump($consoleLogDump)
+    {
+        $this->consoleLogDump = $consoleLogDump;
+
+        return $this;
+    }
+
+
+
 }

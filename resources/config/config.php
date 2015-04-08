@@ -1,6 +1,7 @@
 <?php
 return array(
     'enabled' => true,
+    'onlyEnabledInDebugMode' => true,
     'debugbar' => true,
     'ide-helper' => true,
     'tracy' => true,
