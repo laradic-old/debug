@@ -118,6 +118,21 @@ class Debugger
         return $this;
     }
 
+    public function debugbar()
+    {
+        return $this->app->make('debugbar');
+    }
+
+    public function startTimeline($name, $label = null)
+    {
+        $this->debugbar()->startMeasure($name, $label);
+    }
+
+    public function stopTimeline($name)
+    {
+        $this->debugbar()->stopMeasure($name);
+    }
+
 
 
 }

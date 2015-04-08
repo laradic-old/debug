@@ -25,10 +25,12 @@ class DebugServiceProvider extends ServiceProvider
     {
         /** @var \Illuminate\Foundation\Application $app */
         $app = parent::boot();
+        \Debugger::startTimeline('debug.provider.boot', 'Debug serviceprovider boot');
         \Debugger::log('debug:app:getBindings', $app->getBindings());
         \Debugger::log('debug:app:getLoadedProviders', $app->getLoadedProviders());
         \Debugger::log('debug:app:config', $app->make('config')->all());
         $this->loadViewsFrom(__DIR__.'/resources/ide-helper', 'laradic-ide-helper');
+        \Debugger::stopTimeline('debug.provider.boot');
     }
 
     /**
@@ -41,9 +43,13 @@ class DebugServiceProvider extends ServiceProvider
         /** @var \Illuminate\Foundation\Application $app */
         $app = parent::register();
 
+
         $this->addConfigComponent('laradic/debug', 'laradic/debug', realpath(__DIR__ . '/resources/config'));
 
         $app->register('Laradic\Debug\Providers\DebugbarServiceProvider');
+
+        $app->make('debugbar')->startMeasure('debug.provider.register', 'Debug serviceprovider register');
+
         $app->register('Laradic\Debug\Providers\RouteServiceProvider');
         $app->register('Laradic\Debug\Providers\TracyServiceProvider');
         $app->register('Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
@@ -95,5 +101,7 @@ class DebugServiceProvider extends ServiceProvider
         {
             $this->app->register('Laradic\Debug\Providers\ConsoleServiceProvider');
         }
+
+        $app->make('debugbar')->stopMeasure('debug.provider.register');
     }
 }

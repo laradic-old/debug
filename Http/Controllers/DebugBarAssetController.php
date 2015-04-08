@@ -54,6 +54,11 @@ EOT;
 
         $content = $renderer->dumpAssetsToString('css');
 
+        $overrideCss = file_get_contents(__DIR__ . '/../../resources/debugbar/stylesheet.css');
+        $path = \Asset::make('theme::scripts/plugins/highlightjs/styles/zenburn.css')->path();
+        $highlighJsStyleCss = file_get_contents($path);
+        $content .= "\n$overrideCss\n$highlighJsStyleCss";
+
         $response = new Response(
             $content, 200, array(
                 'Content-Type' => 'text/css',

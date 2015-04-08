@@ -47,8 +47,6 @@ class LoggerFactory implements Logger
         $this->firelog  = new FirelogLogger($app);
         $this->debugbar = new DebugbarLogger($app);
         $this->tracy    = new TracyLogger($app);
-
-
     }
 
     public function enable()
