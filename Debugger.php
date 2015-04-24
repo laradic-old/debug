@@ -57,7 +57,7 @@ class Debugger
 
     public function dump()
     {
-        if($this->enabled)
+        if($this->enabled and config('app.debug'))
         {
             return forward_static_call_array(['Symfony\Component\VarDumper\VarDumper', 'dump'], func_get_args());
         }
@@ -132,7 +132,6 @@ class Debugger
     {
         $this->debugbar()->stopMeasure($name);
     }
-
 
 
 }

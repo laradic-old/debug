@@ -4,6 +4,8 @@
  */
 namespace Laradic\Debug;
 
+use Event;
+
 use Illuminate\Contracts\Foundation\Application;
 use Laradic\Config\Traits\ConfigProviderTrait;
 use Laradic\Support\ServiceProvider;
@@ -25,12 +27,16 @@ class DebugServiceProvider extends ServiceProvider
     {
         /** @var \Illuminate\Foundation\Application $app */
         $app = parent::boot();
-        \Debugger::startTimeline('debug.provider.boot', 'Debug serviceprovider boot');
-        \Debugger::log('debug:app:getBindings', $app->getBindings());
-        \Debugger::log('debug:app:getLoadedProviders', $app->getLoadedProviders());
-        \Debugger::log('debug:app:config', $app->make('config')->all());
+        Event::listen('booting theme:*', function() use ($app){
+            $d = $app->make('debugbar');
+            $d->startMeasure('debug.provider.boot', 'Debug output');
+            $d->log(array_keys($app->getBindings()));
+            $d->log($app->getLoadedProviders());
+            $d->log(array_dot($app->make('config')->all()));
+            $d->stopMeasure('debug.provider.boot');
+        });
+
         $this->loadViewsFrom(__DIR__.'/resources/ide-helper', 'laradic-ide-helper');
-        \Debugger::stopTimeline('debug.provider.boot');
     }
 
     /**
