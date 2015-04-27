@@ -23,6 +23,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4.0",
+        "laradic/support": "*",
         "ccampbell/chromephp": "~4.1",
         "firephp/firephp-core": "0.4.*",
         "tracy/tracy": "2.3.*"

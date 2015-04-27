@@ -36,7 +36,7 @@ class DebugServiceProvider extends ServiceProvider
             $d->stopMeasure('debug.provider.boot');
         });
 
-        $this->loadViewsFrom(__DIR__.'/resources/ide-helper', 'laradic-ide-helper');
+        $this->loadViewsFrom(__DIR__.'/../resources/ide-helper', 'laradic-ide-helper');
     }
 
     /**
@@ -50,7 +50,7 @@ class DebugServiceProvider extends ServiceProvider
         $app = parent::register();
 
 
-        $this->addConfigComponent('laradic/debug', 'laradic/debug', realpath(__DIR__ . '/resources/config'));
+        $this->addConfigComponent('laradic/debug', 'laradic/debug', __DIR__ . '/../resources/config');
 
         $app->register('Laradic\Debug\Providers\DebugbarServiceProvider');
 

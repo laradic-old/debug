@@ -4,10 +4,10 @@
  */
 namespace Laradic\Debug\Console;
 
-use Illuminate\Support\Arr;
-use Laradic\Support\AbstractConsoleCommand;
+use Laradic\Support\Arrays;
+use Laradic\Console\Command;
 
-class ConfigShowCommand extends AbstractConsoleCommand
+class ConfigShowCommand extends Command
 {
     protected $name = 'debug:config:show';
     protected $description = 'Show all config values';
@@ -17,7 +17,7 @@ class ConfigShowCommand extends AbstractConsoleCommand
        # $this->dump($config);
 
         $rows = [];
-        foreach(Arr::dot(app('config')->all()) as $key => $val){
+        foreach(Arrays::dot(app('config')->all()) as $key => $val){
             if(is_bool($val))
             {
                 $val = $val === true ? $this->colorize('green', 'true') : $this->colorize('red', 'false');

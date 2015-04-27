@@ -5,10 +5,10 @@
 namespace Laradic\Debug\Console;
 
 
-use Laradic\Support\AbstractConsoleCommand;
+use Laradic\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ConfigGetCommand extends AbstractConsoleCommand
+class ConfigGetCommand extends Command
 {
 
     protected $name = 'debug:config:get';

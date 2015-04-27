@@ -27,7 +27,6 @@ EOT;
 
         $content .= <<<'EOT'
 
-console.log(PhpDebugBar);
 return PhpDebugBar;
 
 });

@@ -1,11 +1,11 @@
 <?php namespace Laradic\Debug\Console;
 
 use Laradic\Docit\DocitServiceProvider;
-use Laradic\Support\AbstractConsoleCommand;
+use Laradic\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class DevCommand extends AbstractConsoleCommand
+class DevCommand extends Command
 {
 
     /**

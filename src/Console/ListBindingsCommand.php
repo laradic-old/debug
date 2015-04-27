@@ -3,7 +3,7 @@
  * Part of the Radic packages.
  */
 namespace Laradic\Debug\Console;
-use Laradic\Support\AbstractConsoleCommand;
+use Laradic\Console\Command;
 
 /**
  * Class ListBindingsCommand
@@ -14,7 +14,7 @@ use Laradic\Support\AbstractConsoleCommand;
  * @copyright   2011-2015, Robin Radic
  * @link        http://radic.mit-license.org
  */
-class ListBindingsCommand extends AbstractConsoleCommand
+class ListBindingsCommand extends Command
 {
 
     /**

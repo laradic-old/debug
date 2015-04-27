@@ -1,9 +1,9 @@
 <?php namespace Laradic\Debug\Providers;
 
 use Laradic\Debug\Console\MetaCommand;
-use Laradic\Support\AbstractConsoleProvider;
+use Laradic\Console\AggregateConsoleProvider;
 
-class ConsoleServiceProvider extends AbstractConsoleProvider
+class ConsoleServiceProvider extends AggregateConsoleProvider
 {
 
     protected $namespace = 'Laradic\Debug\Console';

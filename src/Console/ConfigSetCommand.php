@@ -4,9 +4,9 @@
  */
 namespace Laradic\Debug\Console;
 
-use Laradic\Support\AbstractConsoleCommand;
+use Laradic\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
-class ConfigSetCommand extends AbstractConsoleCommand
+class ConfigSetCommand extends Command
 {
 
     protected $name = 'debug:config:set';

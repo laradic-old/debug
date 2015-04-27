@@ -27,7 +27,7 @@ abstract class AbstractLogger implements Logger
     public function __construct(Application $app)
     {
         $this->app = $app;
-        #$this->logger = new \Monolog\Logger(Str::random(10));
+        #$this->logger = new \Monolog\Logger(String::random(10));
 
     }
 }

@@ -38,7 +38,7 @@ class BarPanel implements IBarPanel
 	{
 		ob_start();
 		$data = $this->data;
-		require __DIR__ . "/{$this->id}.tab.phtml";
+		require __DIR__ . "/BarPanel.php";
 		return ob_get_clean();
 	}
 
@@ -52,7 +52,7 @@ class BarPanel implements IBarPanel
 		ob_start();
 		if (is_file(__DIR__ . "/{$this->id}.panel.phtml")) {
 			$data = $this->data;
-			require __DIR__ . "/{$this->id}.panel.phtml";
+			require __DIR__ . "/BarPanel.php";
 		}
 		return ob_get_clean();
 	}
