@@ -8,6 +8,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Debug\HtmlDumper;
 use Laradic\Debug\Tracy\BarPanel;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 /**
  * Class DebugFactory
@@ -59,7 +60,8 @@ class Debugger
 
     public function dump($myVar, $maxDepth = 160)
     {
-        $dumper = new HtmlDumper();
+
+        $dumper = $this->app->runningInConsole() ? new CliDumper() : new HtmlDumper() ;
         $cloner = new VarCloner();
         $data = $cloner->cloneVar($myVar);
 
