@@ -4,7 +4,7 @@ return array(
     'onlyEnabledInDebugMode' => true,
     'debugbar' => true,
     'ide-helper' => true,
-    'tracy' => true,
+    'tracy' => false,
     'logging' => false,
     'loggers' => array(
         'chrome' => true,
